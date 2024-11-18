@@ -3,26 +3,43 @@ class Calculator:
         return a + b
 
     def subtract(self, a, b):
-        return b - a
+        return a - b
 
     def multiply(self, a, b):
         result = 0
-        for i in range(b+1):
+        negative = b < 0
+        b = -b if b < 0 else b
+        for _ in range(b):
             result = self.add(result, a)
-        return result
+        return -result if negative else result
 
     def divide(self, a, b):
-        result = 0
-        while a > b:
-            a = self.subtract(a, b)
-            result += 1
-        return result
-    
-    def modulo(self, a, b):
-        while a <= b:
-            a = a-b
-        return a
+        if b == 0:
+            raise ValueError("Cannot do Division by zero")
+        quotient = 0
+        negative = (a < 0) ^ (b < 0)  #check signs differrent
+        a = -a if a < 0 else a
+        b = -b if b < 0 else b
 
+        while a >= b:
+            a = self.subtract(a, b)
+            quotient = self.add(quotient, 1)
+        return -quotient if negative else quotient
+
+    def modulo(self, a, b):
+        if b == 0:
+            raise ValueError("Cannot do Modulo by zero")
+    
+        negative = b < 0
+        a = -a if a < 0 else a
+        b = -b if b < 0 else b
+
+        while a >= b:
+            a = self.subtract(a, b)
+    
+        return -a if negative else a
+
+    
 # Example usage:
 if __name__ == "__main__":
     calc = Calculator()
